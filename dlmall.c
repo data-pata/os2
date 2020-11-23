@@ -151,7 +151,7 @@ void *dalloc(size_t request)
     int size = adjust(request);
     // printf("size adjusted to: %d\n", size);
     struct head *taken = find(size);
-    printf("%p\n", taken);
+    printf("%p  \n ", taken);
     if (taken == NULL)
         return NULL;
     else 

@@ -83,7 +83,8 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < loop; i++)
         {
-            int index = rand() % BUFFER;
+            int index = rand() % ((int) BUFFER);
+            printf("index: %i", index);
             if (buffer[index] != NULL)
             {
                 dfree(buffer[index]);

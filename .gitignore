@@ -1,4 +1,4 @@
-*.outg
+**.out
 *.o
 test
 sizefile
