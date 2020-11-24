@@ -26,4 +26,5 @@ void detach (struct head *block);
 void insert(struct head *block);
 struct head *find(size_t size);
 int adjust(size_t size);
+struct head * merge(struct head *block);
 #endif 

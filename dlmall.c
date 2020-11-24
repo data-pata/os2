@@ -17,7 +17,7 @@
 #define ARENA (64 * 1024)
 
 struct head *arena = NULL;
-struct head *flist;
+struct head *flist = NULL;
 
 static void init() __attribute__((constructor));
 void init() {
@@ -92,8 +92,7 @@ void detach (struct head *block)
         block->next->prev = block->prev;
     if (block->prev != NULL)    
         block->prev->next = block->next;
-    
-    else  // WHATWHAT
+    else 
         flist = flist->next;    
         
     // block->next = NULL; //ELLER ?!?!?
@@ -116,7 +115,10 @@ int adjust(size_t request)
     size = size + (8-(size % ALIGN)); 
     return size;
 }
-     
+
+// dalloc -> find a block in flist or NULL if none are found: 
+// a block of at least MIN(size) aligned, detach and return it
+// if at least LIMIT(size) aligned => split and return the right (higher adress) part
 struct head *find(size_t size) 
 {
     if(flist == NULL)
@@ -164,11 +166,39 @@ void dfree(void *memory) {
         struct head *block = (struct head *) MAGIC(memory);
         
         struct head *aft = after(block);
+        block = merge(block);   
         block->free = TRUE;
-        aft->bfree= TRUE;
+        after(block)->bfree= TRUE; // dangerous if aft is merged??
         insert(block);
     }
 }
+
+struct head *merge(struct head *block) 
+{
+    struct head *aft = after(block);
+    if (block->bfree) {
+        struct head *bfr = before(block);
+        detach(bfr);
+        bfr->size += block->size + HEAD;
+        aft->bsize = bfr->size;
+        // aft->bfree = TRUE; // NOT SURE IF HERE or elsewhere IS DONE IN DFREE CURRENTLY
+        // aft->bfree= TRUE; is done at insert
+        // block = merge(bfr);
+        block = bfr;
+    }
+    if (aft->free) {
+        detach(aft);
+        struct head *aftaft = after(after);
+        block->size += aft->size + HEAD;
+        aftaft->bsize = block->size;
+        // block = merge(aftaft);
+        // block = 
+    }
+    return block;
+}
+
+
+
 
 // int main(int argc, char const *argv[])
 // {   
