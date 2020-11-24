@@ -4,4 +4,4 @@ test
 sizefile
 *.dat
 *.swp
-.vscode
+# .vscode

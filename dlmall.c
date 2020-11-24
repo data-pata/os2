@@ -92,11 +92,9 @@ void detach (struct head *block)
         block->next->prev = block->prev;
     if (block->prev != NULL)    
         block->prev->next = block->next;
-    else 
-        flist = flist->next;    
-        
-    // block->next = NULL; //ELLER ?!?!?
-    // block->prev = NULL;
+    // else flist = flist->next;    
+    if(block == flist)
+        flist = flist->next;
 }
 
 void insert (struct head *block) 
@@ -130,12 +128,12 @@ struct head *find(size_t size)
           detach(block);
           struct head * splt = split(block, size);
           insert(before(splt));
-          after(splt)->bfree=FALSE;
+          after(splt)->bfree=FALSE; // is this ok in c??
           splt->free=FALSE;
           return splt;
-      }    
+    }    
       // else return block if big enough
-      if(block->size >= size) {
+    else if(block->size >= size) {
         detach(block);
         after(block)->bfree = FALSE;
         block->free = FALSE;
@@ -153,7 +151,7 @@ void *dalloc(size_t request)
     int size = adjust(request);
     // printf("size adjusted to: %d\n", size);
     struct head *taken = find(size);
-    printf("%p  \n ", taken);
+    printf("taken   %p  \n ", taken);
     if (taken == NULL)
         return NULL;
     else 
@@ -172,8 +170,9 @@ void dfree(void *memory) {
         insert(block);
     }
 }
+#define MERGE_LEFT 1
 
-struct head *merge(struct head *block) 
+struct head *merge(struct head *block ) 
 {
     struct head *aft = after(block);
     if (block->bfree) {
@@ -181,19 +180,17 @@ struct head *merge(struct head *block)
         detach(bfr);
         bfr->size += block->size + HEAD;
         aft->bsize = bfr->size;
-        // aft->bfree = TRUE; // NOT SURE IF HERE or elsewhere IS DONE IN DFREE CURRENTLY
-        // aft->bfree= TRUE; is done at insert
         // block = merge(bfr);
         block = bfr;
     }
     if (aft->free) {
         detach(aft);
-        struct head *aftaft = after(after);
+        struct head *aftaft = after(aft);
         block->size += aft->size + HEAD;
         aftaft->bsize = block->size;
-        // block = merge(aftaft);
-        // block = 
+        // block = merge(aftaft);   //warning not working
     }
+    
     return block;
 }
 

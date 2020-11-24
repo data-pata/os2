@@ -57,7 +57,7 @@ int cmp(const void *a, const void *b)
 int main(int argc, char *argv[])
 {
 
-    if (argc < 2)
+    if (argc < 3)
     {
         printf("usage: bench <rounds> <loop> (<file>)\n");
         exit(1);
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
         for (int i = 0; i < loop; i++)
         {
             int index = (int) rand() % ((int) BUFFER);
-            printf("index: %d", index);
+            printf("index: %d\n", index);
             if (buffer[index] != NULL)
             {
                 dfree(buffer[index]);
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
         // printf("   length of free list is %d\n", length_of_free());
     }
 
-    FILE *file = fopen("sizefile", "w");
+    FILE *file = fopen(name, "w");
 
     sizes(freq, SIZES);
     int length = length_of_free();

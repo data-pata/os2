@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "gcc bench",
+			"command": "/usr/bin/gcc",
+			"args": [
+				"-g",
+				"dlmall.c",
+				"bench.c",
+				"-o",
+				"bench.o",
+				"-lm"
+			],
+			"options": {
+				"cwd": "/home/ps/code/os/ptmall/",
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: /usr/bin/gcc"
+		},
+		{
+			"label": "My Task",
+			"type": "shell",
+			"command": "echo Hello",
+			"problemMatcher": []
+		}
+	]
+}
