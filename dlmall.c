@@ -180,6 +180,7 @@ struct head *merge(struct head *block )
         detach(bfr);
         bfr->size += block->size + HEAD;
         aft->bsize = bfr->size;
+        aft->bfree = bfr->free; // necessary only for non detach implementation prolly
         // block = merge(bfr);
         block = bfr;
     }
@@ -188,6 +189,7 @@ struct head *merge(struct head *block )
         struct head *aftaft = after(aft);
         block->size += aft->size + HEAD;
         aftaft->bsize = block->size;
+        aftaft->bfree = block->free;
         // block = merge(aftaft);   //warning not working
     }
     
