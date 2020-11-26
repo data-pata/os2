@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "/home/ps/code/os/ptmall/bench.o",
             // "args": [],
-            "args": ["10", "10"],
+            "args": ["filename", "300", "8", "4000"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
