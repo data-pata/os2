@@ -17,7 +17,6 @@
 #define ALIGN 8
 #define ARENA (64 * 1024)
 
-
 struct head *arena = NULL;
 struct head *flist = NULL;
 
@@ -153,7 +152,7 @@ void *dalloc(size_t request)
     int size = adjust(request);
     // printf("size adjusted to: %d\n", size);
     struct head *taken = find(size);
-    printf("taken   %p  \n ", taken);
+    // printf("taken   %p  \n ", taken);
     if (taken == NULL)
         return NULL;
     else 
